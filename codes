@@ -1,0 +1,44 @@
+import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
+import java.util.Random;
+public class GuessNumberGame extends Application {
+    private int numberToGuess;
+    private int numberOfTries;
+    public void start(Stage primaryStage) {
+        primaryStage.setTitle("Guess the Number Game");
+        Label instructionLabel = new Label("I have randomly selected a number between 1 and 100. Try to guess it!");
+        TextField guessField = new TextField();
+        guessField.setPromptText("Enter your guess");
+        Button guessButton = new Button("Guess");
+        Label feedbackLabel = new Label();
+        Label triesLabel = new Label("Number of tries: 0");
+        guessButton.setOnAction(e -> {
+            int guess = Integer.parseInt(guessField.getText());
+            numberOfTries++;
+            triesLabel.setText("Number of tries: " + numberOfTries);
+            if (guess == numberToGuess) {
+                feedbackLabel.setText("Congratulations! You've guessed the number.");
+            } else if (guess < numberToGuess) {
+                feedbackLabel.setText("Too low! Try again.");
+            } else {
+                feedbackLabel.setText("Too high! Try again.");
+            }
+        });
+        VBox vbox = new VBox(10, instructionLabel, guessField, guessButton, feedbackLabel, triesLabel);
+        Scene scene = new Scene(vbox, 400, 200);
+        primaryStage.setScene(scene);
+        primaryStage.show();
+        startNewGame();
+    }
+    private void startNewGame() {
+        Random random = new Random();
+        numberToGuess = random.nextInt(100) + 1;
+        numberOfTries = 0;
+    }
+    public static void main(String[] args) {
+        launch(args);
+    }
+}
